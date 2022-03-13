@@ -16,26 +16,14 @@ public class SudokuBoard {
         solve(0,0);
     }
 
-    public void displayBoard() {
-        for (int i = 0; i < board.length; i++) {
-            for (int j = 0; j < board[i].length; j++) {
-                System.out.print(board[i][j] + " ");
-                if (j == 2 || j == 5) {
-                    System.out.print("| ");
-                }
-            }
-            System.out.print("\n");
-            if (i == 2 || i == 5) {
-                System.out.print("- - - + - - - + - - -\n");
-            }
-        }
+    public int getCellValue(int cellX, int cellY) {
+        return board[cellX][cellY];
     }
 
     private void solve(int row, int col) {
 
         Random generator = new Random();
-        ArrayList<Integer> numbers = new ArrayList<Integer>();
-
+        ArrayList<Integer> numbers = new ArrayList<>();
 
         for (int i = 1; i < 10; i++) {
             numbers.add(i);
@@ -60,9 +48,10 @@ public class SudokuBoard {
 
         //Find next zero and solve it.
         int[] zeros = nextZeroPosition();
-        if (zeros[0] != 10) {
-            solve(zeros[0], zeros[1]);
+        if (zeros[0] == 10) {
+            return;
         }
+        solve(zeros[0], zeros[1]);
     }
 
     private boolean checkRow(int number, int row) {
@@ -75,8 +64,8 @@ public class SudokuBoard {
     }
 
     private boolean checkColumn(int number, int column) {
-        for (int i = 0; i < board.length; i++) {
-            if (board[i][column] == number) {
+        for (int[] ints : board) {
+            if (ints[column] == number) {
                 return false;
             }
         }
@@ -87,8 +76,8 @@ public class SudokuBoard {
         int sectionRow;
         int sectionColumn;
 
-        sectionRow = (int)(row / 3);
-        sectionColumn = (int)(column / 3);
+        sectionRow = row / 3;
+        sectionColumn = column / 3;
 
         for (int k = 0; k < 3; k++) {
             for (int l = 0; l < 3; l++) {
@@ -119,8 +108,8 @@ public class SudokuBoard {
         int sectionRow;
         int sectionColumn;
 
-        sectionRow = (int)(row / 3);
-        sectionColumn = (int)(column / 3);
+        sectionRow = row / 3;
+        sectionColumn = column / 3;
 
         //Clear section.
         for (int k = 0; k < 3; k++) {
@@ -132,7 +121,7 @@ public class SudokuBoard {
         //Clear row and column.
         for (int i = 0; i < 9; i++) {
             board[row][i] = 0;
-            board[i][column] = 0;
+            board[i][row] = 0;
         }
     }
 }

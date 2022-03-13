@@ -1,13 +1,12 @@
 package pl.cp.sudoku;
 
 import org.junit.jupiter.api.Assertions;
-
 import java.lang.reflect.Field;
 
 public class SudokuTest {
 
     @org.junit.jupiter.api.Test
-    public void testGreetNullValueFormatter() {
+    public void testSudokuBoardCorrectness() {
         SudokuBoard sudokuBoard = new SudokuBoard();
         sudokuBoard.fillBoard();
         int[][] board = new int[9][9];
@@ -42,8 +41,8 @@ public class SudokuTest {
                 int sectionRow;
                 int sectionColumn;
 
-                sectionRow = (int)(row / 3);
-                sectionColumn = (int)(column / 3);
+                sectionRow = row / 3;
+                sectionColumn = column / 3;
 
                 for (int k = 0; k < 3; k++) {
                     for (int l = 0; l < 3; l++) {
@@ -54,5 +53,26 @@ public class SudokuTest {
                 }
             }
         }
+    }
+
+    @org.junit.jupiter.api.Test
+    public void testNoSudokuBoardRepetitiveness() {
+
+        boolean SudokuRepetitive = true;
+
+        SudokuBoard sudoku1 = new SudokuBoard();
+        SudokuBoard sudoku2 = new SudokuBoard();
+        sudoku1.fillBoard();
+        sudoku2.fillBoard();
+
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if(sudoku1.getCellValue(i, j) != sudoku2.getCellValue(i, j)) {
+                    SudokuRepetitive = false;
+                    break;
+                }
+            }
+        }
+        Assertions.assertFalse(SudokuRepetitive);
     }
 }
