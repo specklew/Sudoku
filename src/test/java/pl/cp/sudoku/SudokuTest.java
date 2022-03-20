@@ -9,8 +9,9 @@ public class SudokuTest {
 
     @Test
     public void testSudokuBoardCorrectness() {
-        SudokuBoard sudokuBoard = new SudokuBoard();
-        sudokuBoard.fillBoard();
+        SudokuSolver sudokuSolver = new BacktrackingSudokuSolver();
+        SudokuBoard sudokuBoard = new SudokuBoard(sudokuSolver);
+        sudokuBoard.solveGame();
         int[][] board = new int[9][9];
         Field privateBoardField;
         try {
@@ -62,14 +63,18 @@ public class SudokuTest {
 
         boolean SudokuRepetitive = true;
 
-        SudokuBoard sudoku1 = new SudokuBoard();
-        SudokuBoard sudoku2 = new SudokuBoard();
-        sudoku1.fillBoard();
-        sudoku2.fillBoard();
+        SudokuSolver sudokuSolver1 = new BacktrackingSudokuSolver();
+        SudokuSolver sudokuSolver2 = new BacktrackingSudokuSolver();
+
+        SudokuBoard sudoku1 = new SudokuBoard(sudokuSolver1);
+        SudokuBoard sudoku2 = new SudokuBoard(sudokuSolver2);
+
+        sudoku1.solveGame();
+        sudoku2.solveGame();
 
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                if(sudoku1.getCellValue(i, j) != sudoku2.getCellValue(i, j)) {
+                if(sudoku1.get(i, j) != sudoku2.get(i, j)) {
                     SudokuRepetitive = false;
                     break;
                 }
