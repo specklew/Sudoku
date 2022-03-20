@@ -1,11 +1,13 @@
 package pl.cp.sudoku;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import java.lang.reflect.Field;
 
 public class SudokuTest {
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testSudokuBoardCorrectness() {
         SudokuBoard sudokuBoard = new SudokuBoard();
         sudokuBoard.fillBoard();
@@ -55,7 +57,7 @@ public class SudokuTest {
         }
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     public void testNoSudokuBoardRepetitiveness() {
 
         boolean SudokuRepetitive = true;
