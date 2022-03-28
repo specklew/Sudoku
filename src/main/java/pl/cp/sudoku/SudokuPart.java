@@ -1,6 +1,6 @@
 package pl.cp.sudoku;
 
-public abstract class SudokuPart {
+public abstract class SudokuPart{
 
     protected SudokuField[] fields  = new SudokuField[9];
 

@@ -1,12 +1,19 @@
 package pl.cp.sudoku;
 
-public class SudokuBoard {
+public class SudokuBoard implements Observer {
 
     private final SudokuField[][] board = new SudokuField[9][9];
     private final SudokuSolver sudokuSolver;
 
     public SudokuBoard(SudokuSolver solver) {
         this.sudokuSolver = solver;
+    }
+
+    @Override
+    public void update() {
+        if(checkBoard()){
+            System.out.println("Board correct!");
+        }
     }
 
     public int get(int x, int y) {
@@ -17,11 +24,20 @@ public class SudokuBoard {
         board[x][y].setFieldValue(value);
     }
 
+    private boolean checkBoard() {
+        for (int i = 0; i < 9; i++) {
+            if (getRow(i).verify() || getColumn(i).verify() || getBox(i % 3, i / 3).verify()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public void solveGame() {
 
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                board[i][j] = new SudokuField();
+                board[i][j] = new SudokuField(this);
             }
         }
 

@@ -1,10 +1,12 @@
 package pl.cp.sudoku;
 
-public class SudokuField {
+public class SudokuField extends Observable{
 
     private int value;
+    private Observer observer;
 
-    public SudokuField() {
+    public SudokuField(Observer observer) {
+        super(observer);
         this.value = 0;
     }
 
@@ -14,5 +16,6 @@ public class SudokuField {
 
     public void setFieldValue(int value) {
         this.value = value;
+        notifyObservers();
     }
 }
