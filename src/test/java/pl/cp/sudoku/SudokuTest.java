@@ -12,12 +12,12 @@ public class SudokuTest {
         SudokuSolver sudokuSolver = new BacktrackingSudokuSolver();
         SudokuBoard sudokuBoard = new SudokuBoard(sudokuSolver);
         sudokuBoard.solveGame();
-        int[][] board = new int[9][9];
+        SudokuField[][] board = new SudokuField[9][9];
         Field privateBoardField;
         try {
             privateBoardField = SudokuBoard.class.getDeclaredField("board");
             privateBoardField.setAccessible(true);
-            board = (int[][]) privateBoardField.get(sudokuBoard);
+            board = (SudokuField[][]) privateBoardField.get(sudokuBoard);
 
         } catch (NoSuchFieldException | IllegalAccessException e) {
             e.printStackTrace();

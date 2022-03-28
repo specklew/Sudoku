@@ -12,7 +12,7 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
                 sudokuBoard.set(i, j, 0);
             }
         }
-        recursiveSolve(0,0, sudokuBoard);
+        recursiveSolve(0, 0, sudokuBoard);
     }
 
     private void recursiveSolve(int row, int col, SudokuBoard board) {
@@ -28,8 +28,14 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
 
             int num = numbers.get(generator.nextInt(numbers.size()));
 
-            if (checkRow(num, row, board) && checkColumn(num, col, board) && checkSection(num, row, col, board)) {
-                board.set(row, col, num);
+            board.set(row, col, num);
+
+            SudokuRow sudokuRow = board.getRow(row);
+            SudokuColumn sudokuColumn = board.getColumn(col);
+            SudokuBox sudokuBox = board.getBox(row, col);
+
+            if (sudokuRow.verify() && sudokuColumn.verify() && sudokuBox.verify()) {
+
                 break;
             } else {
                 numbers.remove(Integer.valueOf(num));
@@ -47,42 +53,6 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
             return;
         }
         recursiveSolve(zeros[0], zeros[1], board);
-    }
-
-    private boolean checkRow(int number, int row, SudokuBoard sudokuBoard) {
-        for (int i = 0; i < 9; i++) {
-            if (sudokuBoard.get(row, i) == number) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private boolean checkColumn(int number, int column, SudokuBoard sudokuBoard) {
-        for (int i = 0; i < 9; i++) {
-            if (sudokuBoard.get(i, column) == number) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private boolean checkSection(int number, int row, int column, SudokuBoard sudokuBoard) {
-        int sectionRow;
-        int sectionColumn;
-
-        sectionRow = row / 3;
-        sectionColumn = column / 3;
-
-        for (int k = 0; k < 3; k++) {
-            for (int l = 0; l < 3; l++) {
-                if (sudokuBoard.get(sectionRow * 3 + k, sectionColumn * 3 + l) == number) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
     }
 
     private int[] nextZeroPosition(SudokuBoard sudokuBoard) {
