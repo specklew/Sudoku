@@ -1,6 +1,7 @@
 package pl.cp.sudoku;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class BacktrackingSudokuSolver implements SudokuSolver {
@@ -35,7 +36,6 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
             SudokuBox sudokuBox = board.getBox(row, col);
 
             if (sudokuRow.verify() && sudokuColumn.verify() && sudokuBox.verify()) {
-
                 break;
             } else {
                 numbers.remove(Integer.valueOf(num));
@@ -48,26 +48,32 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
         }
 
         //Find next zero and solve it.
-        int[] zeros = nextZeroPosition(board);
-        if (zeros[0] == 10) {
+        List<Integer> zerosList = new ArrayList<>(nextZeroPosition(board));
+        if (zerosList.get(0) == 10) {
             return;
         }
-        recursiveSolve(zeros[0], zeros[1], board);
+        recursiveSolve(zerosList.get(0), zerosList.get(1), board);
     }
 
-    private int[] nextZeroPosition(SudokuBoard sudokuBoard) {
-        int[] position = {10, 10};
+    private List<Integer> nextZeroPosition(SudokuBoard sudokuBoard) {
+        List<Integer> position = new ArrayList<>();
+        position.add(10);
+        position.add(10);
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 if (sudokuBoard.get(i, j) == 0) {
-                    position[0] = i;
-                    position[1] = j;
+                    position.set(0,i);
+                    position.set(1,j);
                     return position;
                 }
             }
         }
         return position;
+
     }
+
+
+
 
     private void clearObstructions(int row, int column, SudokuBoard sudokuBoard) {
         int sectionRow;

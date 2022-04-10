@@ -1,5 +1,9 @@
 package pl.cp.sudoku;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+
 public class SudokuBoard implements Observer {
 
     private final SudokuField[][] board = new SudokuField[9][9];
@@ -11,7 +15,7 @@ public class SudokuBoard implements Observer {
 
     @Override
     public void update() {
-        if(checkBoard()){
+        if (checkBoard()) {
             System.out.println("Board correct!");
         }
     }
@@ -26,10 +30,19 @@ public class SudokuBoard implements Observer {
 
     private boolean checkBoard() {
         for (int i = 0; i < 9; i++) {
-            if (getRow(i).verify() || getColumn(i).verify() || getBox(i % 3, i / 3).verify()) {
+            if (!getRow(i).verify() | !getColumn(i).verify()) {
                 return false;
             }
         }
+
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                if (!getBox(i * 3, j * 3).verify()) {
+                    return false;
+                }
+            }
+        }
+
         return true;
     }
 
@@ -75,7 +88,31 @@ public class SudokuBoard implements Observer {
                 box.setFieldValue(i + j * 3, board[boxRow * 3 + i][boxColumn * 3 + j]);
             }
         }
-
         return box;
+    }
+
+    @Override
+    public String toString() {
+        ToStringBuilder stringBuilder = new ToStringBuilder(this);
+
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                stringBuilder.append(board[i][j].getFieldValue());
+            }
+        }
+        return stringBuilder.toString();
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        SudokuBoard sb = (SudokuBoard) object;
+        return new EqualsBuilder().append(board, sb.board).isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(17, 37).append(board).toHashCode();
     }
 }
