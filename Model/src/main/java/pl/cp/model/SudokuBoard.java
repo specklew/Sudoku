@@ -1,10 +1,21 @@
-package pl.cp.sudoku;
+package pl.cp.model;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import pl.cp.model.parts.SudokuBox;
+import pl.cp.model.parts.SudokuColumn;
+import pl.cp.model.parts.SudokuRow;
+import pl.cp.model.solver.BacktrackingSudokuSolver;
+import pl.cp.model.solver.SudokuSolver;
 
-public class SudokuBoard implements Observer {
+import java.io.Serializable;
+
+public class SudokuBoard implements Observer, Serializable, Cloneable {
+
+    private static final Logger logger = LogManager.getLogger(SudokuBoard.class);
 
     private final SudokuField[][] board = new SudokuField[9][9];
     private final SudokuSolver sudokuSolver;
@@ -15,17 +26,19 @@ public class SudokuBoard implements Observer {
 
     @Override
     public void update() {
-        if (checkBoard()) {
-            System.out.println("Board correct!");
-        }
+        if (checkBoard()) logger.info("Board correct!");
+    }
+
+    public SudokuField getField(int x, int y) {
+        return board[x][y];
     }
 
     public int get(int x, int y) {
-        return board[x][y].getFieldValue();
+        return board[x][y].getValue();
     }
 
     public void set(int x, int y, int value) {
-        board[x][y].setFieldValue(value);
+        board[x][y].setValue(value);
     }
 
     private boolean checkBoard() {
@@ -47,7 +60,6 @@ public class SudokuBoard implements Observer {
     }
 
     public void solveGame() {
-
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 board[i][j] = new SudokuField(this);
@@ -97,7 +109,7 @@ public class SudokuBoard implements Observer {
 
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                stringBuilder.append(board[i][j].getFieldValue());
+                stringBuilder.append(board[i][j].getValue());
             }
         }
         return stringBuilder.toString();
@@ -114,5 +126,17 @@ public class SudokuBoard implements Observer {
     @Override
     public int hashCode() {
         return new HashCodeBuilder(17, 37).append(board).toHashCode();
+    }
+
+    @Override
+    public SudokuBoard clone() {
+        SudokuBoard clone = new SudokuBoard(new BacktrackingSudokuSolver());
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                clone.set(i, j, get(i, j));
+            }
+        }
+
+        return clone;
     }
 }

@@ -1,10 +1,16 @@
-package pl.cp.sudoku;
+package pl.cp.model.solver;
 
+import pl.cp.model.SudokuBoard;
+import pl.cp.model.parts.SudokuBox;
+import pl.cp.model.parts.SudokuColumn;
+import pl.cp.model.parts.SudokuRow;
+
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class BacktrackingSudokuSolver implements SudokuSolver {
+public class BacktrackingSudokuSolver implements SudokuSolver, Serializable {
 
     @Override
     public void solve(SudokuBoard sudokuBoard) {
@@ -62,8 +68,8 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 if (sudokuBoard.get(i, j) == 0) {
-                    position.set(0,i);
-                    position.set(1,j);
+                    position.set(0, i);
+                    position.set(1, j);
                     return position;
                 }
             }
@@ -71,8 +77,6 @@ public class BacktrackingSudokuSolver implements SudokuSolver {
         return position;
 
     }
-
-
 
 
     private void clearObstructions(int row, int column, SudokuBoard sudokuBoard) {

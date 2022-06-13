@@ -1,6 +1,8 @@
-package pl.cp.sudoku;
+package pl.cp.model;
 
-public abstract class Observable {
+import java.io.Serializable;
+
+public abstract class Observable implements Serializable {
 
     private final Observer observer;
 

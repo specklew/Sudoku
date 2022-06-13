@@ -1,4 +1,6 @@
-package pl.cp.sudoku;
+package pl.cp.model.solver;
+
+import pl.cp.model.SudokuBoard;
 
 public interface SudokuSolver {
 
